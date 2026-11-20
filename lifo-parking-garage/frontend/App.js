@@ -1,13 +1,10 @@
-/* =========================================================
-   LIFO Parking Garage
-   Data structure: Stack (Last In, First Out)
-   - Arrival   -> push()  (car drives in and parks nearest the gate)
-   - Departure -> pop()   (only the car nearest the gate can leave)
-   ========================================================= */
-
 const CAPACITY = 10;
 const STORAGE_KEY = "lifo-parking-garage-v1";
-const ANIMATION_MS = 800;
+const STEP_MS = 700;    
+const ANIMATION_MS = STEP_MS * 2;
+const ENTRY_TOP = 0;     // entrance road
+const PARK_TOP  = 84;    // parking row
+const EXIT_TOP  = 168;   // exit road
 
 /* ---------- 1. The Stack ---------- */
 class Stack {
@@ -50,8 +47,6 @@ const messageEl = document.getElementById("message");
 const resultEl = document.getElementById("result");
 const stackListEl = document.getElementById("stackList");
 const recordsEl = document.getElementById("records");
-const barFill = document.getElementById("barFill");
-const capacityText = document.getElementById("capacityText");
 
 /* ---------- 4. Saving (survives page refresh) ---------- */
 function save() {
@@ -108,20 +103,29 @@ function createCarEl(plate) {
   return car;
 }
 
-// Cars drive in from the right (off-screen) to their slot
 function driveIn(plate, index) {
   const car = createCarEl(plate);
+  car.style.transition = "none";            // walang animation sa starting position
   car.style.left = "104%";
+  car.style.top = ENTRY_TOP + "px";
   lane.appendChild(car);
-  void car.offsetWidth; // force the browser to register the start position
-  car.style.left = slotLeft(index);
+  void car.offsetWidth;
+  car.style.transition = "";                // ibalik ang animation ng CSS
+
+  car.style.left = slotLeft(index);         // hakbang 1: pakaliwa sa entrance road
+  setTimeout(() => {
+    car.style.top = PARK_TOP + "px";        // hakbang 2: pababa sa slot
+  }, STEP_MS);
 }
 
-// Cars drive out to the right and are removed
+// Paglabas: bumaba sa exit road, tapos pakanan palabas
 function driveOut(plate) {
   const car = findCarEl(plate);
   if (!car) return;
-  car.style.left = "104%";
+  car.style.top = EXIT_TOP + "px";          // hakbang 1: pababa sa exit road
+  setTimeout(() => {
+    car.style.left = "104%";                // hakbang 2: pakanan palabas
+  }, STEP_MS);
   setTimeout(() => car.remove(), ANIMATION_MS);
 }
 
@@ -131,6 +135,7 @@ function drawAllCars() {
   garage.items.forEach((plate, i) => {
     const car = createCarEl(plate);
     car.style.left = slotLeft(i);
+    car.style.top = PARK_TOP + "px";
     lane.appendChild(car);
   });
 }
@@ -142,11 +147,6 @@ function refreshUI() {
     const topEl = findCarEl(garage.peek());
     if (topEl) topEl.classList.add("top-car");
   }
-
-  // capacity bar
-  capacityText.textContent = `${garage.size()} / ${CAPACITY} cars`;
-  barFill.style.width = (garage.size() / CAPACITY) * 100 + "%";
-  barFill.classList.toggle("full", garage.isFull());
 
   // stack list (top first)
   stackListEl.innerHTML = "";

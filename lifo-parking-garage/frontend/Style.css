@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "PixelGame";
+  src: url("fonts/PixelGame.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   --asphalt: #23272b;
   --asphalt-2: #2d3237;
@@ -7,7 +14,8 @@
   --muted: #6d7378;
   --ok: #2f8f5b;
   --bad: #c8412f;
-  --font: "Bahnschrift", "DIN Alternate", "Arial Narrow", "Segoe UI", sans-serif;
+--font: "VT323", monospace;
+--pixel: "PixelGame", monospace;
 }
 
 * { box-sizing: border-box; }
@@ -21,7 +29,7 @@ body {
 }
 
 .top { padding: 28px 24px 8px; max-width: 1100px; margin: 0 auto; }
-.top h1 { margin: 0; font-size: 2.2rem; font-weight: 700; letter-spacing: .5px; }
+.top h1 { margin: 0; font-size: 5rem; font-weight: 800; letter-spacing: .5px; }
 .top p { margin: 4px 0 0; color: var(--muted); }
 
 main { max-width: 1100px; margin: 0 auto; padding: 16px 24px 48px; }
@@ -29,48 +37,66 @@ main { max-width: 1100px; margin: 0 auto; padding: 16px 24px 48px; }
 /* ---------- Garage lane ---------- */
 .garage-wrap {
   background: var(--asphalt);
-  border-radius: 14px;
-  padding: 14px 16px 16px;
+  border-radius: 20px;
+  padding: 16px 16px 16px;
   overflow-x: auto;
 }
-.lane-labels {
-  min-width: 800px;
-  display: flex;
-  justify-content: space-between;
-  color: #aeb4b9;
-  font-size: .85rem;
-  margin-bottom: 8px;
-}
-
 .lane {
   position: relative;
   min-width: 800px;
-  height: 104px;
+  height: 244px;               /* 70 entrance + 104 parking + 70 exit */
   background: var(--asphalt-2);
   border-top: 4px solid var(--paint);
   border-bottom: 4px solid var(--paint);
   overflow: hidden;
 }
 
-/* painted slot dividers, 10% wide each */
 .slot {
   position: absolute;
-  top: 0; bottom: 0;
+  top: 70px;
+  height: 104px;
   width: 10%;
   border-right: 2px dashed rgba(242, 194, 48, .55);
   color: rgba(255, 255, 255, .28);
   font-size: .8rem;
   padding: 4px 0 0 6px;
+  
 }
 .slot:last-of-type { border-right: none; }
+.slot::after {
+  content: "P";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3.4rem;
+  font-weight: 700;
+  color: rgba(242, 194, 48, .35);
+  pointer-events: none;
+}
+
+.road {
+  position: absolute;
+  left: 0; right: 0;
+  height: 70px;
+  color: rgba(255, 255, 255, .35);
+  font-size: .85rem;
+  padding: 6px 10px;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 24px, transparent 24px 48px) center / 100% 2px no-repeat;
+}
+.road-in  { top: 0; }
+.road-out { bottom: 0; text-align: right; }
 
 .gate {
   position: absolute;
-  right: 0; top: 0; bottom: 0;
+  right: 0;
   width: 6px;
+  height: 70px;
   background: repeating-linear-gradient(45deg, var(--bad) 0 8px, #fff 8px 16px);
   z-index: 3;
 }
+.gate-in  { top: 0; }
+.gate-out { bottom: 0; }
 
 .capacity { min-width: 800px; display: flex; align-items: center; gap: 12px; margin-top: 12px; color: #fff; }
 .bar { flex: 1; height: 8px; background: #3a4046; border-radius: 99px; overflow: hidden; }
@@ -86,7 +112,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 16px 24px 48px; }
   border-radius: 12px 8px 8px 12px;
   background: hsl(var(--hue, 200) 60% 48%);
   box-shadow: inset 0 -6px 0 rgba(0, 0, 0, .18);
-  transition: left .8s cubic-bezier(.45, .05, .25, 1), box-shadow .3s;
+  transition: left .7s ease-in-out, top .7s ease-in-out, box-shadow .3s;
   z-index: 2;
   display: flex;
   align-items: center;
@@ -131,7 +157,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 16px 24px 48px; }
 @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
 
 .panel { background: #fff; border-radius: 14px; padding: 20px; }
-.panel h2 { margin: 0 0 12px; font-size: 1.15rem; }
+.panel h2 { margin: 0 0 12px; font-size: 1.8rem; }
 .panel h2:not(:first-child) { margin-top: 24px; }
 
 label { display: block; margin: 12px 0 4px; font-size: .92rem; color: var(--muted); }
@@ -185,4 +211,15 @@ th { color: var(--muted); font-weight: 600; }
 
 @media (prefers-reduced-motion: reduce) {
   .car, .bar-fill { transition: none; }
+}
+
+.capacity { display: none; }
+.lane-labels { display: none; }
+
+.top h1,
+.panel h2,
+button,
+.car .plate,
+.slot::after {
+  font-weight: medium;
 }

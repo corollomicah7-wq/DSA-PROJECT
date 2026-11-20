@@ -4,43 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LIFO Parking Garage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=VT323&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body style="background-color:rgb(252, 252, 110);"></body>
   <header class="top">
-    <h1>LIFO Parking Garage</h1>
-    <p>One lane, one gate. The last car in is the first car out.</p>
+    <h1>PARKING GARAGE</h1>
+    <p>LAST IN, FIRST OUT</p>
   </header>
 
   <main>
     <!-- THE GARAGE -->
     <section class="garage-wrap" aria-label="Garage lane">
-      <div class="lane-labels">
-        <span>Back of the garage (first in)</span>
-        <span>Gate (top of stack)</span>
-      </div>
 
       <div class="lane" id="lane">
         <!-- 10 painted slots are added by app.js -->
-        <div class="gate" aria-hidden="true"><i></i></div>
+        <div class="road road-in" aria-hidden="true">Entrance</div>
+        <div class="road road-out" aria-hidden="true">Exit</div>
+        <div class="gate gate-in" aria-hidden="true"></div>
+        <div class="gate gate-out" aria-hidden="true"></div>
       </div>
 
       <div class="capacity">
         <div class="bar"><div class="bar-fill" id="barFill"></div></div>
-        <strong id="capacityText">0 / 10 cars</strong>
       </div>
     </section>
 
     <div class="grid">
       <!-- CONTROLS -->
       <section class="panel" aria-label="Car at the gate">
-        <h2>A car is at the gate</h2>
+        <h2>CONTROLS</h2>
 
-        <label for="plate">Plate number</label>
+        <label for="plate">PLATE NUMBER</label>
         <input id="plate" type="text" maxlength="10" placeholder="e.g. ABC 1234" autocomplete="off" />
 
         <label for="action">Type <b>a</b> for arrival or <b>d</b> for departure</label>
-        <input id="action" type="text" maxlength="1" placeholder="a or d" autocomplete="off" />
+        <input id="action" type="text" maxlength="1" placeholder="A or d" autocomplete="off" />
 
         <div class="buttons">
           <button id="go" type="button">Send car</button>
