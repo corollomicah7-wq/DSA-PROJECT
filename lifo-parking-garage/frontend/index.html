@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LIFO Parking Garage</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top">
+    <h1>LIFO Parking Garage</h1>
+    <p>One lane, one gate. The last car in is the first car out.</p>
+  </header>
+
+  <main>
+    <!-- THE GARAGE -->
+    <section class="garage-wrap" aria-label="Garage lane">
+      <div class="lane-labels">
+        <span>Back of the garage (first in)</span>
+        <span>Gate (top of stack)</span>
+      </div>
+
+      <div class="lane" id="lane">
+        <!-- 10 painted slots are added by app.js -->
+        <div class="gate" aria-hidden="true"><i></i></div>
+      </div>
+
+      <div class="capacity">
+        <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+        <strong id="capacityText">0 / 10 cars</strong>
+      </div>
+    </section>
+
+    <div class="grid">
+      <!-- CONTROLS -->
+      <section class="panel" aria-label="Car at the gate">
+        <h2>A car is at the gate</h2>
+
+        <label for="plate">Plate number</label>
+        <input id="plate" type="text" maxlength="10" placeholder="e.g. ABC 1234" autocomplete="off" />
+
+        <label for="action">Type <b>a</b> for arrival or <b>d</b> for departure</label>
+        <input id="action" type="text" maxlength="1" placeholder="a or d" autocomplete="off" />
+
+        <div class="buttons">
+          <button id="go" type="button">Send car</button>
+          <button id="reset" type="button" class="ghost">Reset garage</button>
+        </div>
+
+        <p id="message" class="message" role="status" aria-live="polite">
+          Enter a plate number and press Enter.
+        </p>
+
+        <div id="result" class="result" hidden></div>
+      </section>
+
+      <!-- STACK VIEW + RECORDS -->
+      <section class="panel" aria-label="Stack and records">
+        <h2>Stack (top first)</h2>
+        <ol id="stackList" class="stack-list"></ol>
+
+        <h2>Car records</h2>
+        <table>
+          <thead>
+            <tr><th>Plate</th><th>Arrived</th><th>Departed</th><th>Status</th></tr>
+          </thead>
+          <tbody id="records"></tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
