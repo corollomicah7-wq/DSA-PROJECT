@@ -1,0 +1,6 @@
+{
+  "name": "RecursionTree — BST & Call Stack Visualizer",
+  "description": "Interactive Binary Search Tree visualizer focused on teaching recursion, activation frames, base cases, and call stack unwinding.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
